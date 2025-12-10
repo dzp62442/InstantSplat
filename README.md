@@ -48,14 +48,14 @@ wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge
 ```bash
 conda create -n instantsplat python=3.10.13 cmake=3.14.0 -y
 conda activate instantsplat
-conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia  # use the correct version of cuda for your system
+pip install numpy==1.26.3 torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
-pip install submodules/simple-knn
-pip install submodules/diff-gaussian-rasterization
-pip install submodules/fused-ssim
+pip install --no-build-isolation submodules/simple-knn  # 不要创建临时的隔离环境
+pip install --no-build-isolation submodules/diff-gaussian-rasterization
+pip install --no-build-isolation submodules/fused-ssim
 ```
 
-1. Optional but highly suggested, compile the cuda kernels for RoPE (as in CroCo v2).
+3. Optional but highly suggested, compile the cuda kernels for RoPE (as in CroCo v2).
 ```bash
 # DUST3R relies on RoPE positional embeddings for which you can compile some cuda kernels for faster runtime.
 cd croco/models/curope/
@@ -75,7 +75,7 @@ if docker failed to produce reasonable results, try Installation step again with
   # then do whatever data preparation
 ```
 
-1. Command
+2. Command
 ```bash
   # InstantSplat train and output video (no GT reference, render by interpolation) using the following command.
   # Users can place their data in the 'assets/examples/<scene_name>/images' folder and run the following command directly.
